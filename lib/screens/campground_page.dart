@@ -92,7 +92,7 @@ class NameLocationRating extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(Icons.star, color: Theme.of(context).primaryColor),
-                  const Text(' 4.5'),
+                  Text(' $rating'),
                 ],
               ),
             )
