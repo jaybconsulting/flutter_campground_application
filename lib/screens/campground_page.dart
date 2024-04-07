@@ -3,9 +3,13 @@ import '../bloc/campground.dart';
 
 class CampgroundPage extends StatelessWidget {
   final Campground campground;
+  final VoidCallback goToNextPage;
+  final VoidCallback goToPreviousPage;
   
   const CampgroundPage({
     required this.campground,
+    required this.goToNextPage,
+    required this.goToPreviousPage,
     super.key,
   });
 
@@ -22,6 +26,10 @@ class CampgroundPage extends StatelessWidget {
             NameLocationRating(name: campground.name, location: campground.location, rating: campground.rating),
             const CallRouteShare(),
             DescriptionSection(description: campground.description),
+            PageNavigationSection(
+              goToNextPage: goToNextPage,
+              goToPreviousPage: goToPreviousPage,
+            ),
           ],
         ),
       ),
@@ -29,22 +37,18 @@ class CampgroundPage extends StatelessWidget {
   }
 }
 
-class DescriptionSection extends StatelessWidget {
-  const DescriptionSection({
-    required this.description,
-    super.key,
-  });
+class ImageSection extends StatelessWidget {
+  const ImageSection({required this.imageLocation, super.key});
 
-  final String description;
+  final String imageLocation;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Text(
-        description,
-        softWrap: true,
-      ),
+    return Image.asset(
+      imageLocation,
+      width: 600,
+      height: 400,
+      fit: BoxFit.cover,
     );
   }
 }
@@ -98,28 +102,6 @@ class NameLocationRating extends StatelessWidget {
   }
 }
 
-class CallRouteShare extends StatelessWidget {
-  const CallRouteShare({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    Color callRouteShareColor = Theme.of(context).primaryColor;
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          CampgroundInfoButton(text: 'CALL', icon: Icons.phone, color: callRouteShareColor),
-          CampgroundInfoButton(text: 'ROUTE', icon: Icons.near_me, color: callRouteShareColor),
-          CampgroundInfoButton(text: 'SHARE', icon: Icons.share, color: callRouteShareColor)
-        ]
-      )
-    );
-  }
-}
-
-// make a new stateless widget called CampgroundInfoButton
 class CampgroundInfoButton extends StatelessWidget {
   final String text;
   final IconData icon;
@@ -147,18 +129,99 @@ class CampgroundInfoButton extends StatelessWidget {
   }
 }
 
-class ImageSection extends StatelessWidget {
-  const ImageSection({required this.imageLocation, super.key});
-
-  final String imageLocation;
+class CallRouteShare extends StatelessWidget {
+  const CallRouteShare({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      imageLocation,
-      width: 600,
-      height: 400,
-      fit: BoxFit.cover,
+    Color callRouteShareColor = Theme.of(context).primaryColor;
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CampgroundInfoButton(text: 'CALL', icon: Icons.phone, color: callRouteShareColor),
+          CampgroundInfoButton(text: 'ROUTE', icon: Icons.near_me, color: callRouteShareColor),
+          CampgroundInfoButton(text: 'SHARE', icon: Icons.share, color: callRouteShareColor)
+        ]
+      )
+    );
+  }
+}
+
+class DescriptionSection extends StatelessWidget {
+  const DescriptionSection({
+    required this.description,
+    super.key,
+  });
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Text(
+        description,
+        softWrap: true,
+      ),
+    );
+  }
+}
+
+class PageNavigationSection extends StatelessWidget {
+  final VoidCallback goToNextPage;
+  final VoidCallback goToPreviousPage;
+
+  const PageNavigationSection({
+    required this.goToNextPage,
+    required this.goToPreviousPage,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+      Padding(
+        padding: const EdgeInsets.only(bottom: 30.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            PageNavigationButton(
+              icon: Icons.arrow_back,
+              onPressed: goToPreviousPage,
+            ),
+            PageNavigationButton(
+              icon: Icons.arrow_forward,
+              onPressed: goToNextPage,
+            ),
+          ],
+        ),
+      );
+  }
+}
+
+class PageNavigationButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  const PageNavigationButton({
+    required this.icon,
+    required this.onPressed,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(icon),
+      style: ButtonStyle(
+        // add an outline to the button
+        side: MaterialStateProperty.all<BorderSide>(BorderSide(color: Theme.of(context).primaryColor, width: 1)),
+        foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+      ),
+      onPressed: onPressed,
     );
   }
 }
