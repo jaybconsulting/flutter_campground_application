@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../bloc/campground.dart';
 import '../themes/constants.dart';
+import 'campground_rating.dart';
 
 class CampgroundPage extends StatelessWidget {
   final Campground campground;
@@ -80,14 +81,7 @@ class NameLocationRating extends StatelessWidget {
           child:
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(Icons.star, color: Theme.of(context).primaryColor),
-                  Text(' $rating'),
-                ],
-              ),
+              child: CampgroundRating(rating: rating),
             )
         )
       ],),

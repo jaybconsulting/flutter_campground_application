@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../bloc/campground.dart';
 import 'campground_page.dart';
 import '../themes/constants.dart';
+import 'campground_rating.dart';
 
 class CampgroundCard extends StatelessWidget {
   const CampgroundCard({
@@ -38,14 +39,19 @@ class CampgroundCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(campground.name, style: campgroundNameStyle),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(campground.name, style: campgroundNameStyle),
+                        CampgroundRating(rating: campground.rating),
+                      ],
+                    ),
                     Text(campground.location, style: campgroundLocationStyle),
-                    Text(campground.rating.toString()),
                   ],
                 ),
               )
