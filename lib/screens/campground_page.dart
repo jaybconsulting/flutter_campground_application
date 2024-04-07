@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import '../bloc/campground.dart';
+import '../themes/constants.dart';
 
 class CampgroundPage extends StatelessWidget {
   final Campground campground;
-  final VoidCallback goToNextPage;
-  final VoidCallback goToPreviousPage;
   
   const CampgroundPage({
     required this.campground,
-    required this.goToNextPage,
-    required this.goToPreviousPage,
     super.key,
   });
 
@@ -17,7 +14,7 @@ class CampgroundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Campground App'),
+        title: Text(campground.name),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -26,10 +23,6 @@ class CampgroundPage extends StatelessWidget {
             NameLocationRating(name: campground.name, location: campground.location, rating: campground.rating),
             const CallRouteShare(),
             DescriptionSection(description: campground.description),
-            PageNavigationSection(
-              goToNextPage: goToNextPage,
-              goToPreviousPage: goToPreviousPage,
-            ),
           ],
         ),
       ),
@@ -73,11 +66,11 @@ class NameLocationRating extends StatelessWidget {
               children: [
                 Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(name, style: campgroundNameStyle),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: Text(location, style: const TextStyle(color: Colors.grey)),
+                  child: Text(location, style: campgroundLocationStyle),
                 ),
               ],
             )
